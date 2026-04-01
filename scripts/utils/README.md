@@ -1,36 +1,36 @@
 # 🛠️ Data Preparation: `k_dataset.ipynb`
 
-Questo notebook è il cuore della preparazione dei dati. Si occupa di scaricare le traiettorie di base, generare le dimostrazioni visive tramite motion planning e convertire il tutto nel formato richiesto dal framework LeRobot.
+This notebook is the core of the data preparation pipeline. It is responsible for downloading the base trajectories, generating visual demonstrations via motion planning, and converting everything into the format required by the LeRobot framework.
 
-Di seguito viene spiegato il flusso di lavoro passo dopo passo:
+Below is the step-by-step workflow:
 
-### 1 e 2. Installazione Librerie e Autenticazione
-Le prime celle del notebook sono dedicate alla configurazione dell'ambiente.
-* Vengono installate tutte le librerie e le dipendenze necessarie per far girare ManiSkill, LeRobot e gli script di motion planning.
-* Viene effettuato il login su **Hugging Face (HF)** (necessario per caricare i dataset) o su Google Drive.
-* **Attenzione:** Dopo aver eseguito le celle di installazione, è generalmente necessario **riavviare la sessione** (Restart Session) di Colab o del notebook, come specificato all'interno del codice stesso, per far sì che le nuove librerie vengano caricate correttamente.
+### 1 and 2. Library Installation and Authentication
+The first cells of the notebook are dedicated to environment setup.
+* They install all the required libraries and dependencies to run ManiSkill, LeRobot, and the motion planning scripts.
+* You are prompted to log in to **Hugging Face (HF)** (necessary for uploading the datasets) or Google Drive.
+* **Important:** After executing the installation cells, it is generally necessary to **restart the session** in Colab or your notebook environment, as indicated within the code itself. This ensures that the newly installed libraries are loaded correctly.
 
-### 2.1 - 2.5 Override degli Ambienti (Environments)
-In questa sezione vengono applicati degli *override* agli ambienti di simulazione standard. Questo passaggio è fondamentale per personalizzare alcune caratteristiche degli ambienti originali, come ad esempio:
-* La modifica della risoluzione delle telecamere (camera resolution).
-* La variazione delle dimensioni o delle caratteristiche fisiche degli oggetti manipolati dal robot.
+### 2.1 - 2.5 Environment Overrides
+In this section, custom *overrides* are applied to the standard simulation environments. This step is crucial for modifying certain characteristics of the original environments, such as:
+* Changing the camera resolution.
+* Altering the size or physical properties of the objects manipulated by the robot.
 
-### 2.6 - 2.71 Script di Motion Planning e Conversione
-Qui vengono create o modificate le funzioni core necessarie per la manipolazione dei dati:
-* Funzioni per gli script di **motion planning** e per la generazione effettiva delle dimostrazioni (passaggio da stati fisici a vere e proprie sequenze di azioni).
-* Funzioni e script necessari per la conversione del dataset generato nel formato specifico **LeRobot Format v3.0**.
+### 2.6 - 2.71 Motion Planning and Conversion Scripts
+Here, the core functions needed for data manipulation are created or modified:
+* Functions for the **motion planning** scripts and the actual generation of demonstrations (transitioning from physical states to complete action sequences).
+* Functions and scripts required to convert the generated dataset into the specific **LeRobot Format v3.0**.
 
-### 3 - 7. Elaborazione dei Singoli Task
-Questa è la fase operativa principale. Per ognuno dei task scelti, procedendo uno alla volta, il notebook esegue in sequenza queste operazioni:
-1. **Download:** Scarica le traiettorie (demos) ufficiali fornite da ManiSkill.
-2. **Replay e Generazione Video:** Utilizzando la funzione `replay_force_panda`, vengono eseguiti gli script di motion planning. Le traiettorie scaricate vengono "riprodotte" nella simulazione, trasformandole in dimostrazioni complete di video (osservazioni visive).
-3. **Conversione:** Tramite lo script `convert_maniskill_v3_native.py`, i dati grezzi vengono convertiti nel dataset finale. Durante questa fase si scelgono parametri chiave come gli FPS, la risoluzione delle immagini, il tipo di robot, e viene associata un'istruzione in linguaggio naturale (*natural language instruction*).
-4. **Upload:** Il dataset specifico appena convertito per il singolo task viene caricato (upload) sul tuo hub di Hugging Face.
+### 3 - 7. Processing Individual Tasks
+This is the main operational phase. For each chosen task, processing one at a time, the notebook sequentially executes the following operations:
+1. **Download:** Downloads the official trajectories (demos) provided by ManiSkill.
+2. **Replay and Video Generation:** Using the `replay_force_panda` function, the motion planning scripts are executed. The downloaded trajectories are "replayed" in the simulation, transforming them into complete demonstrations with videos (visual observations).
+3. **Conversion:** Through the `convert_maniskill_v3_native.py` script, the raw data is converted into the final dataset format. During this phase, you select key parameters such as FPS, image resolution, and robot type, and append a natural language instruction.
+4. **Upload:** The specific dataset just converted for the individual task is uploaded to your Hugging Face Hub.
 
-### Unione dei Dataset (Merge)
-Dopo aver elaborato e caricato su Hugging Face i dataset per ogni singolo task, il notebook procede a unificarli. Viene utilizzato il comando `lerobot-edit-dataset` per fare il **merge** di tutti i dataset individuali in un unico grande dataset comprensivo di tutte le dimostrazioni.
+### Dataset Merging
+After processing and uploading the datasets for each single task to Hugging Face, the notebook unifies them. The `lerobot-edit-dataset` command is used to **merge** all the individual task datasets into one large, comprehensive dataset containing all demonstrations.
 
-### Check Finale (Facoltativo)
-Alla fine del notebook sono presenti delle celle facoltative di **CHECK**. È altamente consigliato eseguirle per ispezionare il dataset ottenuto e assicurarsi che:
-* Contenga tutte le informazioni corrette (immagini, stati, azioni).
-* Sia effettivamente e pienamente compatibile con il framework LeRobot prima di passare alla fase di addestramento dei modelli.
+### Final Check (Optional)
+At the end of the notebook, there are optional **CHECK** cells. It is highly recommended to run them to inspect the resulting dataset and ensure that:
+* It contains all the correct information (images, states, actions).
+* It is actually and fully compatible with the LeRobot framework before proceeding to the model training phase.
