@@ -38,3 +38,24 @@ The final phase consists of an active, closed-loop evaluation within the customi
 * **Initialization and Bridging:** The notebook initializes the vectorized environments, loads the trained policy, and establishes the essential helper functions required to translate generic LeRobot actions into ManiSkill-compatible control signals.
 * **Inference Loop:** The policy acts autonomously within the environment over the designated number of steps.
 * **Results and Visualization:** Upon conclusion of the inference loop, comprehensive success metrics are outputted directly in the notebook, accompanied by generated MP4 video renderings of the evaluation trials for qualitative analysis.
+
+---
+
+## Model-Specific Extensions: RDT-1B (`rdt1b.ipynb`)
+
+While adhering to the overarching workflow described above, the pipeline for the **Robotics Diffusion Transformer (RDT-1B)** incorporates several model-specific architectural and data-processing deviations. When executing the `rdt1b.ipynb` notebook, users should note the following specialized phases:
+
+### Dataset Processing Extensions
+The data provisioning phase for RDT-1B introduces supplementary procedures necessitated by the model's multimodal architecture:
+1. **Embeddings Retrieval:** The pipeline requires the integration of pre-computed natural language embeddings (generated prior via the `k_embeddings.ipynb` utility script).
+2. **HDF5 Conversion:** The standard LeRobot dataset format is structurally incompatible with the native RDT dataloader. Consequently, the notebook executes an automated conversion of the dataset into the **HDF5 format**, during which the pre-computed language embeddings are injected directly into the data hierarchy.
+
+### Encoders and Weights Initialization
+This section manages the independent acquisition of the model's foundational encoders:
+* **Visual Encoder:** The "SigLIP" visual encoder weights are downloaded and initialized separately.
+* **Textual Encoder Omission:** Crucially, the pipeline intentionally bypasses the downloading and instantiation of the Google T5-XXL textual encoder. This architectural truncation is a deliberate optimization necessary to prevent Out-Of-Memory (OOM) exceptions, as loading the full T5-XXL model concurrently with RDT-1B exceeds the 40GB VRAM limitations of a standard NVIDIA A100 GPU.
+
+### Fine-Tuning Setup
+This segment executes specific configurational prerequisites and environmental setups mandated by the native [RDT-1B framework](https://github.com/thu-ml/RoboticsDiffusionTransformer). These steps are deeply integrated with the original repository's logic. For a comprehensive understanding of these underlying mechanisms, or for instructions on how to modify these initialization parameters, users are highly encouraged to consult the official RDT documentation.
+
+*(Note: Beyond these specific initialization and data formatting steps, the remainder of the RDT-1B training, offline testing, and online evaluation workflows align identically with the standardized pipeline detailed in sections 4 through 6).*
