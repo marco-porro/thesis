@@ -70,10 +70,13 @@ To test the trained policies in different scenarios or reproduce the ablation st
 
 ## ⚙️ Customizing the Execution
 
-Inside the main training notebooks, look for the configuration variables located before the training loop to modify the basic settings:
-* **`TASKS_TO_RUN` / `env_id`**: Change the simulation task (e.g., from `PickCube-v1` to `StackCube-v1`).
-* **`training_steps`**: Modify the duration of the training (you can lower it for a quick test run).
-* **`num_episodes`**: Adjust the number of evaluation videos generated at the end of the process.
+The entire pipeline is designed to be highly modular, allowing for intuitive modifications across all its subcomponents. To fully understand what parameters can be adjusted and how to implement these changes, please refer to the dedicated `README.md` files located within the respective subdirectories, as well as the detailed inline comments accompanying the specific functions within each Jupyter Notebook.
+
+Broadly speaking, the primary elements that can be practically customized include:
+
+* **Tasks and Virtual Environments:** You can seamlessly switch between different simulation tasks (e.g., from `PickCube-v1` to `StackCube-v1`). Furthermore, the physical and visual properties of these environments can be overridden. This includes adjusting camera resolution, frames per second (FPS), natural language prompts, controller types, and the robotic agent itself.
+* **Training Parameters:** Key hyperparameters—such as `training_steps`, batch sizes, and learning rates—can be easily modified to suit different computational constraints or experimental setups (e.g., lowering the training steps for a quick compilation test).
+* **Evaluation Settings:** The evaluation loops can be tailored by adjusting `num_episodes` (the number of generated test videos), specifying random seeds, or altering the natural language instructions provided to the models to test their semantic generalization capabilities.
 
 ## 📥 Accessing the Results
 * **Training Metrics**: Tracked live via the W&B link generated in the Colab output.
