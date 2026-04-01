@@ -49,6 +49,7 @@ All the pipelines are extremely similar to each other and the script cells are a
 If you are starting from scratch and need to generate or process the datasets yourself, use the scripts in the `utils/` folder:
 1. Run **`k_dataset.ipynb`** to gather the demonstrations, compile them, and convert them into the correct formats.
 2. If you intend to train the **RDT-1B** model, you must first run **`k_embeddings.ipynb`** to pre-compute the textual embeddings. This will save significant compute time during the main training phase. The results can be automatically copied to your Google Drive space.
+
 Additional information on how to use these utils scripts are provided in the readme of the respective folder.
 
 ### Phase 2: Training and Standard Evaluation
